@@ -1,7 +1,8 @@
-	module lang::css::m3::examples::Volume
+module lang::css::m3::examples::Paper
 
 import lang::css::m3::AST;
 import lang::css::m3::Core;
+import lang::css::m3::PrettyPrinter;
 
 import IO;
 import String;
@@ -12,10 +13,11 @@ import Node;
 import List;
 import util::Math;
 
-//set[Statement] stylesheetAST = createAstsFromDirectory(|home:///workspace/Rascal/rascal/testCSS/examples/|);
-//set[M3] stylesheetM3s = createM3sFromDirectory(|home:///workspace/Rascal/rascal/testCSS/github-mod/1-10/|);
-
-public void calculateVolume() {
+/**
+ * From the paper: Complexity Metrics for Cascading Style Sheets
+ */
+ 
+public void metrics1() {
 
 	list[loc] dirs = [
 		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/9gag|,
@@ -42,20 +44,20 @@ public void calculateVolume() {
 		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/vimeo|,
 		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/w3|,
 		//|home:///workspace/Rascal/rascal/testCSS/sample-set/web/youtube|,
-		//
-		//|home:///workspace/Rascal/rascal/testCSS/sample-set/github/animate.css-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/balloon.css-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/blueprint-css-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bootstrap-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bulma-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/CSSgram-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/csshake-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/devices.css-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Gumby-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/hint.css-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Hover-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/icono-master|,
-	 //   |home:///workspace/Rascal/rascal/testCSS/sample-set/github/lesshat-master|,
+		
+		|home:///workspace/Rascal/rascal/testCSS/sample-set/github/animate.css-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/balloon.css-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/blueprint-css-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bootstrap-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/bulma-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/CSSgram-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/csshake-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/devices.css-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Gumby-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/hint.css-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Hover-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/icono-master|,
+	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/lesshat-master|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/Makisu-master|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/milligram-master|,
 	    |home:///workspace/Rascal/rascal/testCSS/sample-set/github/penthouse-master|,
@@ -71,32 +73,54 @@ public void calculateVolume() {
 	];
 	
 	for (d <- dirs) {
-	
-		M3 stylesheetM3 = createM3FromDirectory(d);
-	
-		int \all = 0;
-		int code = 0;
-		int blank = 0;
-		int comment = 0;
+		stylesheetM3 = createM3FromDirectory(d);
 		
-		for (style <- stylesheets(stylesheetM3)) {
-			\all += calculateAllLines(style);
-			blank += calculateBlankLines(style);
-		}
-		
-		comment += calculateLinesOfComments(stylesheetM3);
-		code = (\all - blank) - comment;
-		
-		//iprintln(stylesheetM3[0]);
-		//iprintln("All lines: <\all>");
-		//iprintln("Lines of code: <code>");
-		//iprintln("Blank lines: <blank>");
-		//iprintln("Lines of comments: <comment>");
-		println("<stylesheetM3[0]> & <\all> & <code> & <blank> & <comment>");
+		//iprintln("RL: <ruleLength()>");
+		//iprintln("NORB: <numberOfRuleBlocks()>");
+		//iprintln("EM: <entropyMetrics()>");
+		//iprintln("NOERB: <numberOfExtendedRuleBlocks()>");
+		//iprintln("NOADPRB: <numberOfAttributesDefinedPerRuleBlock()>");
+		//iprintln("NOCRB: <numberOfCohesiveRuleBlocks()>");
+		iprintln("<d> <ruleLength()> <numberOfRuleBlocks()> <numberOfAttributesDefinedPerRuleBlock()> <numberOfCohesiveRuleBlocks()>"); 
 	}
 }
 
-int calculateAllLines(loc style) = size(readFileLines(style));	
-int calculateLinesOfCode(loc style, M3 stylesheet) = (calculateAllLines(style)-calculateBlankLines(style)-calculateLinesOfComments(stylesheet));	
-int calculateLinesOfComments(M3 style) = sum([0]+[calculateAllLines(d[1]) | d <- style@documentation]);
-int calculateBlankLines(loc style) = size([line | line <- readFileLines(style), trim(line) == ""]); 
+M3 stylesheetM3;
+ 
+public int ruleLength() {	
+	int ruleLength = 0;
+	bool commentBlock = false;
+	for (rule <- ruleSets(stylesheetM3)) {
+		for (line <- readFileLines(rule)) {	
+			if (contains(line,"/*") && !contains(line,"*/")) {
+				commentBlock = true;
+			} else if (commentBlock && contains(line,"*/")) {
+				commentBlock = false;
+			} else if (!(trim(line) == "")) {
+				ruleLength += 1;
+			}
+		}
+	}
+	return ruleLength;
+}
+
+public int  numberOfRuleBlocks() {	
+	return size(ruleSets(stylesheetM3));
+}
+
+// @TODO / IS THIS EVEN POSSIBLE? CREATING EQUIVALENCE CLASSES IS NOT DEFINE...
+public int entropyMetrics() {
+	return 1;
+}
+
+public int numberOfExtendedRuleBlocks() {	
+	return size(ruleSets(stylesheetM3));
+}
+
+public real numberOfAttributesDefinedPerRuleBlock() {	
+	return toReal(size(declarations(stylesheetM3)))/toReal(size(ruleSets(stylesheetM3)));
+}
+
+public int numberOfCohesiveRuleBlocks() {	
+	return size([rule | rule <- ruleSets(stylesheetM3), size({a | <e,a> <- stylesheetM3@containment, e == rule, isDeclaration(a)}) == 1]);
+}
